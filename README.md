@@ -36,17 +36,18 @@ Open:
 ```json
 {
   "latitude": 12.9716,
-  "longitude": 77.5946
+  "longitude": 77.5946,
+  "label": "optional label"
 }
 ```
 
-`label` is optional. If omitted, the API derives a stable label from coordinates.
+The address details (postal_code, country, state, city, district, street) are auto-derived from latitude and longitude.
 
 ### Update
-`PUT /addresses/{id}`
+`PUT /addresses/{postal_code}`
 
 ### Delete
-`DELETE /addresses/{id}`
+`DELETE /addresses/{postal_code}`
 
 ### List
 `GET /addresses`

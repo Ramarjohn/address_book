@@ -15,32 +15,32 @@ log = get_logger(__name__)
 
 @router.post("/addresses", response_model=AddressOut, status_code=201)
 def create(payload: AddressCreate, db: Session = Depends(get_db)):
-    log.info("Creating address label=%s", payload.label)
+    log.info("Creating address lat=%s lon=%s", payload.latitude, payload.longitude)
     return create_address(db, payload)
 
 @router.get("/addresses", response_model=list[AddressOut])
 def list_all(db: Session = Depends(get_db)):
     return list_addresses(db)
 
-@router.get("/addresses/{address_id}", response_model=AddressOut)
-def get_one(address_id: int, db: Session = Depends(get_db)):
-    obj = get_address(db, address_id)
+@router.get("/addresses/{postal_code}", response_model=AddressOut)
+def get_one(postal_code: str, db: Session = Depends(get_db)):
+    obj = get_address(db, postal_code)
     if not obj:
         raise HTTPException(status_code=404, detail="Address not found")
     return obj
 
-@router.put("/addresses/{address_id}", response_model=AddressOut)
-def update_one(address_id: int, payload: AddressUpdate, db: Session = Depends(get_db)):
-    log.info("Updating address id=%s", address_id)
-    obj = update_address(db, address_id, payload)
+@router.put("/addresses/{postal_code}", response_model=AddressOut)
+def update_one(postal_code: str, payload: AddressUpdate, db: Session = Depends(get_db)):
+    log.info("Updating address postal_code=%s", postal_code)
+    obj = update_address(db, postal_code, payload)
     if not obj:
         raise HTTPException(status_code=404, detail="Address not found")
     return obj
 
-@router.delete("/addresses/{address_id}", status_code=204)
-def delete_one(address_id: int, db: Session = Depends(get_db)):
-    log.info("Deleting address id=%s", address_id)
-    ok = delete_address(db, address_id)
+@router.delete("/addresses/{postal_code}", status_code=204)
+def delete_one(postal_code: str, db: Session = Depends(get_db)):
+    log.info("Deleting address postal_code=%s", postal_code)
+    ok = delete_address(db, postal_code)
     if not ok:
         raise HTTPException(status_code=404, detail="Address not found")
     return None
